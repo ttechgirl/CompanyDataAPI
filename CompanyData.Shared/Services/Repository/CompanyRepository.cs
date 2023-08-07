@@ -23,7 +23,7 @@ namespace CompanyData.Shared.Services.Repository
             _dbContext =dbContext;
         }
 
-        public async Task<Company?> CreateCompany(CreateDto company)
+        public async Task<Company?> CreateCompany(CreateCompanyDto company)
         {
             var query = "INSERT INTO Company(id,address,city,state) " +
                        " VALUES (@Id,@Address, @City, @State)";
@@ -36,8 +36,7 @@ namespace CompanyData.Shared.Services.Repository
 
             using (var connection = _dbContext.CreateConnection())
             {
-                var response= await connection.ExecuteAsync(query,parameters);
-
+                await connection.ExecuteAsync(query,parameters);
                 var createdCompany = new Company
                 {
                     Id = company.Id,
@@ -49,9 +48,13 @@ namespace CompanyData.Shared.Services.Repository
             }
         }
 
-        public Task<Company?> DeleteCompany(Guid Id)
+        public async Task DeleteCompany(Guid Id)
         {
-            throw new NotImplementedException();
+            var query = "DELETE FROM Company WHERE Id=@Id";
+            using(var connection = _dbContext.CreateConnection())
+            {
+                await connection.ExecuteAsync(query,new {Id});
+            }
         }
 
         public async  Task<IEnumerable<Company?>> GetCompanies()
@@ -68,10 +71,7 @@ namespace CompanyData.Shared.Services.Repository
         {
             var query = "SELECT * FROM Company WHERE id=@Id ";
             var query1= "SELECT * FROM Employee WHERE CompanyId= @Id";
-            if (query == null)
-            {
-                return null;
-            }
+           
             using (var connection = _dbContext.CreateConnection())
             {
                 var company = await connection.QueryFirstOrDefaultAsync<Company>(query,new {Id});
@@ -81,9 +81,20 @@ namespace CompanyData.Shared.Services.Repository
             }
         }
 
-        public Task<Company?> UpdateCompany(UpdateDto company)
+        public async Task UpdateCompany(Guid Id, UpdateCompanyDto company)
         {
-            throw new NotImplementedException();
+            var query = "UPDATE Company " +
+                        "SET address=@Address,city=@City,state= @State";
+            var parameters = new DynamicParameters();
+            parameters.Add("id", Id,DbType.Guid);
+            parameters.Add("address", company.Address);
+            parameters.Add("city", company.City);
+            parameters.Add("state", company.State);
+
+            using(var connection = _dbContext.CreateConnection())
+            {
+                await connection.ExecuteAsync(query, parameters);
+            }
         }
     }
 }

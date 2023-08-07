@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CompanyData.Shared.Dto
 {
-    public class CreateDto
+    public class CreateCompanyDto
     {
         public Guid Id { get; set; }
         public string? Address { get; set; }

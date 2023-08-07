@@ -11,7 +11,8 @@ namespace CompanyDataAPI
     {
         public static WebApplicationBuilder RegisterDI(this WebApplicationBuilder builder)
         {
-            builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+            builder.Services.AddScoped<ICompanyRepository,CompanyRepository>();
+            builder.Services.AddScoped<IEmployeeRepository,EmployeeRepository>();
             builder.Services.AddSingleton<ConfigDbContext>();
             //builder.Services.AddSingleton<IDbConnection>(db =>
             //{

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CompanyData.Shared.Dto
 {
-    public class UpdateDto
+    public class UpdateCompanyDto
     {
-        public Guid Id { get; set; }
+       // public Guid Id { get; set; }
         public string? Address { get; set; }
         public string? City { get; set; }
         public string? State { get; set; }

@@ -15,14 +15,14 @@ namespace CompanyDataAPI.Controllers
             _companyRepository = companyRepository;
         }
 
-        [HttpGet("get-companies")]
+        [HttpGet("Get-Companies")]
         public async Task<IActionResult> GetACompanies()
         {
             var companies = await _companyRepository.GetCompanies();
             return Ok(companies);
         }
 
-        [HttpGet("get-company-{Id}",Name = "CompanyById")]
+        [HttpGet("Get-Company/{Id}",Name = "CompanyById")] 
         public async Task<IActionResult> GetACompany(Guid Id)
         {
             var company = await _companyRepository.GetCompany(Id);
@@ -33,8 +33,8 @@ namespace CompanyDataAPI.Controllers
             return Ok(company);
         }
 
-        [HttpPost("create-company")]
-        public async Task<IActionResult> CreateCompany([FromBody] CreateDto company)
+        [HttpPost("Create-Company")]
+        public async Task<IActionResult> CreateCompany([FromBody] CreateCompanyDto company)
         {
             var createdCompany = await _companyRepository.CreateCompany(company);
             if (createdCompany == null)
@@ -45,5 +45,25 @@ namespace CompanyDataAPI.Controllers
            return CreatedAtRoute("CompanyById", new { id = createdCompany.Id }, createdCompany);
         }
 
+        [HttpPut("Update-Company/{Id}")]
+        public async Task<IActionResult> UpdateCompany(Guid Id, [FromBody] UpdateCompanyDto company)
+        {
+            var getCompany =await _companyRepository.GetCompany(Id);
+            if (getCompany == null)
+                return NotFound();
+
+           await _companyRepository.UpdateCompany(Id, company); 
+            return Ok(getCompany);
+        }
+
+        [HttpDelete("Delete-Company/{Id}")]
+        public async Task<IActionResult> DeleteCompany(Guid Id)
+        { 
+            var getCompany = await _companyRepository.GetCompany(Id);
+            if(getCompany == null)
+                return NotFound();
+            await _companyRepository.DeleteCompany(Id); 
+            return Ok(getCompany);
+        }
     }
 }

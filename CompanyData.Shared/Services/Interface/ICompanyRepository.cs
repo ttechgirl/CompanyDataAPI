@@ -12,9 +12,9 @@ namespace CompanyData.Shared.Services.Interface
     {
         Task<IEnumerable<Company?>> GetCompanies();
         Task<Company?> GetCompany(Guid Id);
-        Task<Company?> CreateCompany(CreateDto company);
-        Task<Company?> UpdateCompany(UpdateDto company);
-        Task<Company?> DeleteCompany(Guid Id);
+        Task<Company?> CreateCompany(CreateCompanyDto company);
+        Task UpdateCompany(Guid Id,UpdateCompanyDto company);
+        Task DeleteCompany(Guid Id);
 
 
     }
