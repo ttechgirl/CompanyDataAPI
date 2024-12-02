@@ -15,10 +15,10 @@ namespace CompanyDataAPI.Controllers
             _employeeRepository = employeeRepository;
         }
 
-        [HttpGet("ByEmployee/{Id}")]
-        public async Task<IActionResult> GetCompanyByEmployeeId(Guid Id)
+        [HttpGet("ByEmployee/{id}")]
+        public async Task<IActionResult> GetCompanyByEmployeeId(Guid id)
         {
-            var company = await _employeeRepository.GetCompanyByEmployeeId(Id);
+            var company = await _employeeRepository.GetCompanyByEmployeeId(id);
             if (company == null)
                 return NotFound();
 

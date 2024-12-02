@@ -1,4 +1,6 @@
-﻿using CompanyData.Shared.Models;
+﻿using CompanyData.Shared.Dto;
+using CompanyData.Shared.Models;
+using CompanyData.Shared.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,11 @@ namespace CompanyData.Shared.Services.Interface
 {
     public interface IEmployeeRepository
     {
-        Task<Company> GetCompanyByEmployeeId(Guid Id);
+        Task<EmployeeDto> GetCompanyByEmployeeId(Guid Id);
+        Task<IEnumerable<EmployeeDto?>> GetEmployees();
+        Task<EmployeeDto?> GetEmployee(Guid Id);
+        Task<EmployeeDto?> CreateEmployee(EmployeeViewModel company);
+        Task UpdateEmployeeDetails(Guid Id, EmployeeViewModel company);
+        Task DeleteEmployee(Guid Id);
     }
 }

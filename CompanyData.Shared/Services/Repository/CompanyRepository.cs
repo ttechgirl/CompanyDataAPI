@@ -48,12 +48,12 @@ namespace CompanyData.Shared.Services.Repository
             }
         }
 
-        public async Task DeleteCompany(Guid Id)
+        public async Task DeleteCompany(Guid id)
         {
             var query = "DELETE FROM Company WHERE Id=@Id";
             using(var connection = _dbContext.CreateConnection())
             {
-                await connection.ExecuteAsync(query,new {Id});
+                await connection.ExecuteAsync(query,new {id});
             }
         }
 
@@ -67,26 +67,26 @@ namespace CompanyData.Shared.Services.Repository
             }
         }
 
-        public async Task<Company?> GetCompany(Guid Id)
+        public async Task<Company?> GetCompany(Guid id)
         {
-            var query = "SELECT * FROM Company WHERE id=@Id ";
-            var query1= "SELECT * FROM Employee WHERE CompanyId= @Id";
+            var query = "SELECT * FROM Company WHERE id=@id ";
+            var query1= "SELECT * FROM Employee WHERE CompanyId= @id";
            
             using (var connection = _dbContext.CreateConnection())
             {
-                var company = await connection.QueryFirstOrDefaultAsync<Company>(query,new {Id});
-                var employee = await connection.QueryAsync<Employee>(query1, new { Id }) ;
+                var company = await connection.QueryFirstOrDefaultAsync<Company>(query,new {id});
+                var employee = await connection.QueryAsync<Employee>(query1, new { id }) ;
                 company.Employees= employee.ToList();
                 return company;
             }
         }
 
-        public async Task UpdateCompany(Guid Id, UpdateCompanyDto company)
+        public async Task UpdateCompany(Guid id, UpdateCompanyDto company)
         {
             var query = "UPDATE Company " +
                         "SET address=@Address,city=@City,state= @State";
             var parameters = new DynamicParameters();
-            parameters.Add("id", Id,DbType.Guid);
+            parameters.Add("id", id,DbType.Guid);
             parameters.Add("address", company.Address);
             parameters.Add("city", company.City);
             parameters.Add("state", company.State);

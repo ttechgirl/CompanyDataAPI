@@ -7,11 +7,6 @@ namespace CompanyDataAPI
 {
     public static partial class Startup
     {
-        //public void Configure(IApplicationBuilder app)
-        //{
-        //    // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        //}
-
         public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
         {
             // Add services to the container.

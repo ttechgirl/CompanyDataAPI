@@ -15,17 +15,17 @@ namespace CompanyDataAPI.Controllers
             _companyRepository = companyRepository;
         }
 
-        [HttpGet("Get-Companies")]
+        [HttpGet("get-companies")]
         public async Task<IActionResult> GetACompanies()
         {
             var companies = await _companyRepository.GetCompanies();
             return Ok(companies);
         }
 
-        [HttpGet("Get-Company/{Id}",Name = "CompanyById")] 
-        public async Task<IActionResult> GetACompany(Guid Id)
+        [HttpGet("get-company/{id}",Name = "CompanyById")] 
+        public async Task<IActionResult> GetACompany(Guid id)
         {
-            var company = await _companyRepository.GetCompany(Id);
+            var company = await _companyRepository.GetCompany(id);
             if(company == null)
             {
                 return NotFound();
@@ -33,7 +33,7 @@ namespace CompanyDataAPI.Controllers
             return Ok(company);
         }
 
-        [HttpPost("Create-Company")]
+        [HttpPost("create-company")]
         public async Task<IActionResult> CreateCompany([FromBody] CreateCompanyDto company)
         {
             var createdCompany = await _companyRepository.CreateCompany(company);
@@ -41,22 +41,21 @@ namespace CompanyDataAPI.Controllers
             {
                 return BadRequest();
             }
-           //return Ok(createdCompany);
            return CreatedAtRoute("CompanyById", new { id = createdCompany.Id }, createdCompany);
         }
 
-        [HttpPut("Update-Company/{Id}")]
-        public async Task<IActionResult> UpdateCompany(Guid Id, [FromBody] UpdateCompanyDto company)
+        [HttpPut("update-company/{id}")]
+        public async Task<IActionResult> UpdateCompany(Guid id, [FromBody] UpdateCompanyDto company)
         {
-            var getCompany =await _companyRepository.GetCompany(Id);
+            var getCompany =await _companyRepository.GetCompany(id);
             if (getCompany == null)
                 return NotFound();
 
-           await _companyRepository.UpdateCompany(Id, company); 
+           await _companyRepository.UpdateCompany(id, company); 
             return Ok(getCompany);
         }
 
-        [HttpDelete("Delete-Company/{Id}")]
+        [HttpDelete("delete-company/{id}")]
         public async Task<IActionResult> DeleteCompany(Guid Id)
         { 
             var getCompany = await _companyRepository.GetCompany(Id);
