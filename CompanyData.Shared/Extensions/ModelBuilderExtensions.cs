@@ -12,8 +12,8 @@ namespace CompanyData.Shared.Extensions
     {
         public static void Seed(this ModelBuilder builder)
         {
-            builder.Entity<Company>().HasData(
-               new Company
+            builder.Entity<Department>().HasData(
+               new Department
                {
                    //foreign key
                    Id = Guid.Parse("43738933-acf0-4479-8624-0ef1bec0383d"),
@@ -22,7 +22,7 @@ namespace CompanyData.Shared.Extensions
                    State = "Texas",
                  
                },
-              new Company
+              new Department
               {
                   //foreign key
                   Id = Guid.Parse("6c7e9c5d-89ae-43d9-8f19-feb71af65e8f"),
@@ -36,7 +36,7 @@ namespace CompanyData.Shared.Extensions
               new Employee
               {
                   Id = Guid.NewGuid(),
-                  CompanyId = Guid.Parse("43738933-acf0-4479-8624-0ef1bec0383d"),
+                  DepartmentId = Guid.Parse("43738933-acf0-4479-8624-0ef1bec0383d"),
                   LastName = "Paul",
                   FirstName = "Isaac",
                   PhoneNumber = "+1312754448",
@@ -48,7 +48,7 @@ namespace CompanyData.Shared.Extensions
             new Employee
             {
                 Id = Guid.NewGuid(),
-                CompanyId = Guid.Parse("6c7e9c5d-89ae-43d9-8f19-feb71af65e8f"),
+                DepartmentId = Guid.Parse("6c7e9c5d-89ae-43d9-8f19-feb71af65e8f"),
                 LastName = "Evans",
                 FirstName = "Cherri",
                 MiddleName = "Beauty",

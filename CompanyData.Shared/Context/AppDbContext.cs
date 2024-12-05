@@ -19,7 +19,8 @@ namespace CompanyData.Shared.Context
         }
 
        
-        public DbSet<Company> Company { get; set; }
+        public DbSet<Department> Company { get; set; }
+        public DbSet<Employee> Employee { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

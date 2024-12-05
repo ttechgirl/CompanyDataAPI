@@ -18,7 +18,7 @@ namespace CompanyDataAPI.Controllers
         [HttpGet("ByEmployee/{id}")]
         public async Task<IActionResult> GetCompanyByEmployeeId(Guid id)
         {
-            var company = await _employeeRepository.GetCompanyByEmployeeId(id);
+            var company = await _employeeRepository.GetEmployee(id);
             if (company == null)
                 return NotFound();
 

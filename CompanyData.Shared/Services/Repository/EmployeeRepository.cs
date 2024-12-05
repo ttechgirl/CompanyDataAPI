@@ -22,9 +22,25 @@ namespace CompanyData.Shared.Services.Repository
             _dbContext = dbContext;
         }
 
-        public Task<EmployeeDto?> CreateEmployee(EmployeeViewModel company)
+        public async Task CreateEmployee(EmployeeViewModel employee)
         {
-            throw new NotImplementedException();
+            var query = "INSERT INTO Employee(lastName,firstName,middleName,phoneNumber,email,department,jobRole,wagesInDollar,address,departmentId) " +
+                        " VALUES (@LastName, @FirstName,@MiddleName,@PhoneNumber,@Email,@Department,@JobRole,@Supervisor,@WagesInDollar,@Address,@DepartmentId)";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("lastName", employee.FirstName);
+            parameters.Add("firstName", employee.LastName);
+            parameters.Add("middleName", employee.MiddleName);
+            parameters.Add("phoneNumber", employee.PhoneNumber);
+            parameters.Add("email", employee.Email);
+            parameters.Add("jobRole", employee.JobRole);
+            parameters.Add("wagesInDollar", employee.WagesInDollar);
+            parameters.Add("address", employee.Address);
+            parameters.Add("departmentId", employee.DepartmentId);
+
+            using var connection = _dbContext.CreateConnection();
+            await connection.ExecuteAsync(query, parameters);
+            return;
         }
 
         public Task DeleteEmployee(Guid Id)
@@ -32,38 +48,52 @@ namespace CompanyData.Shared.Services.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<Company> GetCompanyByEmployeeId(Guid Id)
+        public async Task<EmployeeDto?> GetEmployee(Guid Id)
         {
             var sproc = "sp_get_employee";
             var parameters = new DynamicParameters();
-            parameters.Add("id", Id ,DbType.Guid,ParameterDirection.Input);
-            using(var connection = _dbContext.CreateConnection())
+            parameters.Add("id", Id, DbType.Guid, ParameterDirection.Input);
+            using (var connection = _dbContext.CreateConnection())
             {
-                var company = await connection.QueryFirstOrDefaultAsync<Company>
+                var result = await connection.QueryFirstOrDefaultAsync<EmployeeDto>
                              (sproc, parameters, commandType: CommandType.StoredProcedure);
 
-                return company;
+                return result;
             }
         }
 
-        public Task<EmployeeDto?> GetEmployee(Guid Id)
+        public async Task<IEnumerable<EmployeeDto?>> GetEmployees()
         {
-            throw new NotImplementedException();
+            var query = "SELECT * FROM Employee ";
+            using (var connection = _dbContext.CreateConnection())
+            {
+                var employees = await connection.QueryAsync<EmployeeDto>(query);
+                return employees.ToList();
+            }
         }
 
-        public Task<IEnumerable<EmployeeDto?>> GetEmployees()
+        public async Task UpdateEmployeeDetails(Guid Id, EmployeeViewModel employee)
         {
-            throw new NotImplementedException();
+            var query = "UPDATE Department " +
+                       "SET lastName,firstName,middleName,phoneNumber,email,department,jobRole,wagesInDollar,address,departmentId,modifiedOn" +
+                        " VALUES (@LastName, @FirstName,@MiddleName,@PhoneNumber,@Email,@Department,@JobRole,@Supervisor,@WagesInDollar,@Address,@DepartmentId,ModifiedOn)";
+            var modifiedOn = DateTime.Now;
+            var parameters = new DynamicParameters();
+            parameters.Add("lastName", employee.FirstName);
+            parameters.Add("firstName", employee.LastName);
+            parameters.Add("middleName", employee.MiddleName);
+            parameters.Add("phoneNumber", employee.PhoneNumber);
+            parameters.Add("email", employee.Email);
+            parameters.Add("jobRole", employee.JobRole);
+            parameters.Add("wagesInDollar", employee.WagesInDollar);
+            parameters.Add("address", employee.Address);
+            parameters.Add("departmentId", employee.DepartmentId);
+
+            using (var connection = _dbContext.CreateConnection())
+            {
+                await connection.ExecuteAsync(query, parameters);
+            }
         }
 
-        public Task UpdateEmployeeDetails(Guid Id, EmployeeViewModel company)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<EmployeeDto> IEmployeeRepository.GetCompanyByEmployeeId(Guid Id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
