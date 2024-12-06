@@ -25,9 +25,11 @@ namespace CompanyData.Shared.Services.Repository
 
         public async Task<DepartmentDto?> CreateDepartment(DepartmentViewModel model)
         {
-            var query = "INSERT INTO Department(supervisor,city,state) " +
-                       " VALUES (@Supervisor, @City, @State)";
+
+            var query = "INSERT INTO Department(name,supervisor,city,state) " +
+                       " VALUES (@Name,@Supervisor, @City, @State)";
             var parameters = new DynamicParameters();
+            parameters.Add("name", model.Name);
             parameters.Add("supervisor", model.Supervisor);
             parameters.Add("city", model.City);
             parameters.Add("state", model.State);
@@ -42,6 +44,7 @@ namespace CompanyData.Shared.Services.Repository
 
         public async Task DeleteDepartment(Guid id)
         {
+
             var query = "DELETE FROM Department WHERE Id=@Id";
             using(var connection = _dbContext.CreateConnection())
             {
@@ -61,23 +64,23 @@ namespace CompanyData.Shared.Services.Repository
 
         public async Task<DepartmentDto?> GetDepartment(Guid id)
         {
+
             var query = "SELECT * FROM Department WHERE Id =@id ";
-            //var query1= "SELECT * FROM Employee WHERE CompanyId= @id";
            
             using (var connection = _dbContext.CreateConnection())
             {
                 var department = await connection.QueryFirstOrDefaultAsync<DepartmentDto>(query,new {id});
-                //var employee = await connection.QueryAsync<Employee>(query1, new { id }) ;
-                //company.Employees= employee.ToList();
                 return department;
             }
         }
 
         public async Task UpdateDepartment(Guid id, DepartmentViewModel model)
         {
+
             var query = "UPDATE Department " +
-                        "SET address=@Address,city=@City,state= @State, supervisor = @Supervisor";
+                        "SET name=@Name , address=@Address, city=@City, state= @State, supervisor = @Supervisor";
             var parameters = new DynamicParameters();
+            parameters.Add("name", model.Name);
             parameters.Add("city", model.City);
             parameters.Add("state", model.State);
             parameters.Add("supervisor", model);

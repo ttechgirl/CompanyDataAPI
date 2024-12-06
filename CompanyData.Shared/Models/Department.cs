@@ -11,6 +11,7 @@ namespace CompanyData.Shared.Models
     public class Department
     {
         public Guid Id { get; set; } = Guid.NewGuid();
+        public string? Name { get; set; }
         public string? Supervisor { get; set; }
         public string? City { get; set; }
         public string? State { get; set; }

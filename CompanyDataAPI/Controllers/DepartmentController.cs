@@ -19,19 +19,19 @@ namespace CompanyDataAPI.Controllers
         [HttpGet("get-department")]
         public async Task<IActionResult> GetACompanies()
         {
-            var companies = await _companyDepartment.GetDepartments();
-            return Ok(companies);
+            var response = await _companyDepartment.GetDepartments();
+            return Ok(response);
         }
 
-        [HttpGet("get-department/{id}", Name = "CompanyById")] 
+        [HttpGet("get-department/{id}", Name = "ById")] 
         public async Task<IActionResult> GetDepartment(Guid id)
         {
-            var company = await _companyDepartment.GetDepartment(id);
-            if(company == null)
+            var response = await _companyDepartment.GetDepartment(id);
+            if(response == null)
             {
                 return NotFound();
             }
-            return Ok(company);
+            return Ok(response);
         }
 
         [HttpPost("create-department")]
@@ -42,7 +42,7 @@ namespace CompanyDataAPI.Controllers
             {
                 return BadRequest();
             }
-           return CreatedAtRoute("CompanyById", new { id = response.Id }, response);
+            return CreatedAtRoute("ById", new { id = response.Id }, response);
         }
 
         [HttpPut("update-department/{id}")]
