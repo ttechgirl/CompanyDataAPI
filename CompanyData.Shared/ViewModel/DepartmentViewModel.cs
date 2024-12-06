@@ -13,9 +13,9 @@ namespace CompanyData.Shared.ViewModel
     {
         [Required]
         public string? Name { get; set; }
+        [Required]
         public string? Supervisor { get; set; }
-        public string? City { get; set; }
-        public string? State { get; set; }
+     
 
         public static explicit operator DepartmentViewModel(DepartmentDto source)
         {
@@ -23,8 +23,7 @@ namespace CompanyData.Shared.ViewModel
             {
                 Name = source.Name,
                 Supervisor = source.Supervisor,
-                City = source.City,
-                State = source.State,
+               
             };
             return destination;
         }
@@ -35,8 +34,7 @@ namespace CompanyData.Shared.ViewModel
             {
                 Name = source.Name,
                 Supervisor = source.Supervisor,
-                City = source.City,
-                State = source.State,
+                
             };
             return destination;
         }

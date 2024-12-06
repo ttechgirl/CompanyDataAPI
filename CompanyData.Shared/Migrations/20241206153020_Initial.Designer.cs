@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CompanyData.Shared.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241206132005_Modifications")]
-    partial class Modifications
+    [Migration("20241206153020_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,9 +31,6 @@ namespace CompanyData.Shared.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -49,9 +46,6 @@ namespace CompanyData.Shared.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("State")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Supervisor")
                         .HasColumnType("nvarchar(max)");
 
@@ -63,23 +57,17 @@ namespace CompanyData.Shared.Migrations
                         new
                         {
                             Id = new Guid("43738933-acf0-4479-8624-0ef1bec0383d"),
-                            City = "Houston",
                             CreatedBy = "HR",
-                            CreatedOn = new DateTime(2024, 12, 6, 14, 20, 4, 874, DateTimeKind.Local).AddTicks(6173),
                             ModifiedBy = "HR",
-                            Name = "Enginearing & Product",
-                            State = "Texas",
+                            Name = "Engineering & Product",
                             Supervisor = "paul@company.com"
                         },
                         new
                         {
                             Id = new Guid("6c7e9c5d-89ae-43d9-8f19-feb71af65e8f"),
-                            City = "Ikeja",
                             CreatedBy = "HR",
-                            CreatedOn = new DateTime(2024, 12, 6, 14, 20, 4, 874, DateTimeKind.Local).AddTicks(6354),
                             ModifiedBy = "HR",
                             Name = "Marketing & Sales",
-                            State = "Lagos",
                             Supervisor = "Adex@company.com"
                         });
                 });
@@ -93,10 +81,19 @@ namespace CompanyData.Shared.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("DepartmentId")
@@ -107,6 +104,9 @@ namespace CompanyData.Shared.Migrations
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("JobRole")
                         .HasColumnType("nvarchar(max)");
@@ -126,6 +126,9 @@ namespace CompanyData.Shared.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("WagesInDollar")
                         .HasColumnType("float");
 
@@ -140,46 +143,55 @@ namespace CompanyData.Shared.Migrations
                         {
                             Id = new Guid("acc627bb-7733-4e13-876e-7d49a3838c12"),
                             Address = "8,Mesa Road",
+                            City = "Houston",
                             CreatedBy = "HR",
-                            CreatedOn = new DateTime(2024, 12, 6, 14, 20, 4, 874, DateTimeKind.Local).AddTicks(6739),
+                            DeletedBy = "HR",
                             DepartmentId = new Guid("43738933-acf0-4479-8624-0ef1bec0383d"),
                             Email = "paul@company.com",
                             FirstName = "Isaac",
-                            JobRole = "Lead",
+                            IsDeleted = false,
+                            JobRole = "Tech Lead",
                             LastName = "Paul",
                             ModifiedBy = "HR",
                             PhoneNumber = "+1312754448",
+                            State = "Texas",
                             WagesInDollar = 4500.0
                         },
                         new
                         {
                             Id = new Guid("d17d52bd-9178-41d1-b399-705f6b7899b9"),
                             Address = "12,ogunnaike street GRA",
+                            City = "Ikeja",
                             CreatedBy = "HR",
-                            CreatedOn = new DateTime(2024, 12, 6, 14, 20, 4, 874, DateTimeKind.Local).AddTicks(6761),
+                            DeletedBy = "HR",
                             DepartmentId = new Guid("6c7e9c5d-89ae-43d9-8f19-feb71af65e8f"),
                             Email = "cherry@company.com",
                             FirstName = "Cherri",
+                            IsDeleted = false,
                             JobRole = "Media",
                             LastName = "Evans",
                             MiddleName = "Beauty",
                             ModifiedBy = "HR",
                             PhoneNumber = "07027544487",
+                            State = "Lagos",
                             WagesInDollar = 2500.0
                         },
                         new
                         {
                             Id = new Guid("7713bf21-9e81-4949-abf7-d5a64f281d69"),
                             Address = "30 Alpha estate lekki",
+                            City = "Ikeja",
                             CreatedBy = "HR",
-                            CreatedOn = new DateTime(2024, 12, 6, 14, 20, 4, 874, DateTimeKind.Local).AddTicks(6772),
+                            DeletedBy = "HR",
                             DepartmentId = new Guid("6c7e9c5d-89ae-43d9-8f19-feb71af65e8f"),
                             Email = "Adex@company.com",
                             FirstName = "Michael",
+                            IsDeleted = false,
                             JobRole = "Media Lead",
                             LastName = "Adex",
                             ModifiedBy = "HR",
                             PhoneNumber = "0907794487",
+                            State = "Lagos",
                             WagesInDollar = 5500.0
                         });
                 });

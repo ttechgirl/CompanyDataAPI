@@ -8,19 +8,22 @@ using System.Threading.Tasks;
 
 namespace CompanyData.Shared.Dto
 {
-    public record EmployeeDto(
-        Guid Id,
-        string? LastName,
-        string? FirstName,
-        string? MiddleName ,
-        string? PhoneNumber,
-        string? Email ,
-        string? Department ,
-        string? Address ,
-        string? JobRole,
-        string? Supervisor,
-        double WagesInDollar,
-        Guid CompanyId
-    );
+    public class EmployeeDto
+    {
+        public Guid Id { get; set; } 
+        public string? LastName { get; set; }
+        public string? FirstName { get; set; }
+        public string? MiddleName { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? Email { get; set; }
+        public string? Address { get; set; }
+        public string? JobRole { get; set; }
+        public string? City { get; set; }
+        public string? State { get; set; }
+        public double WagesInDollar { get; set; }
+        public Guid DepartmentId { get; set; }
+    }
+       
+    
     
 }

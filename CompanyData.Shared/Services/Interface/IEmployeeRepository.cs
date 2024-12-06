@@ -12,8 +12,8 @@ namespace CompanyData.Shared.Services.Interface
     public interface IEmployeeRepository
     {
         Task<IEnumerable<EmployeeDto?>> GetEmployees();
-        Task<EmployeeDto?> GetEmployee(Guid Id);
-        Task CreateEmployee(EmployeeViewModel employee);
+        Task<EmployeeDto?> GetEmployee(Guid id);
+        Task<EmployeeDto> CreateEmployee(EmployeeViewModel employee);
         Task UpdateEmployeeDetails(Guid Id, EmployeeViewModel company);
         Task DeleteEmployee(Guid Id);
     }

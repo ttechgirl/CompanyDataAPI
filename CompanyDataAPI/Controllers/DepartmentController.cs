@@ -16,16 +16,21 @@ namespace CompanyDataAPI.Controllers
             _companyDepartment = companyDepartment;
         }
 
-        [HttpGet("get-department")]
-        public async Task<IActionResult> GetACompanies()
+        [HttpGet("get-departments")]
+        public async Task<IActionResult> GetDepartments()
         {
             var response = await _companyDepartment.GetDepartments();
             return Ok(response);
         }
 
-        [HttpGet("get-department/{id}", Name = "ById")] 
+        [HttpGet("get-department/{id}", Name = "DepartmentById")] 
         public async Task<IActionResult> GetDepartment(Guid id)
         {
+
+            if (Guid.Empty.Equals(id))
+            {
+                return BadRequest("Invalid Id");
+            }
             var response = await _companyDepartment.GetDepartment(id);
             if(response == null)
             {
@@ -42,28 +47,42 @@ namespace CompanyDataAPI.Controllers
             {
                 return BadRequest();
             }
-            return CreatedAtRoute("ById", new { id = response.Id }, response);
+            return CreatedAtRoute("DepartmentById", new { id = response.Id }, response);
         }
 
         [HttpPut("update-department/{id}")]
         public async Task<IActionResult> UpdateDepartment(Guid id, [FromBody] DepartmentViewModel model)
         {
+
+            if (Guid.Empty.Equals(id))
+            {
+                return BadRequest("Invalid Id");
+            }
+            if (ModelState == null)
+            {
+                return BadRequest("Kindly enter required fields");
+            }
             var response = await _companyDepartment.GetDepartment(id);
             if (response == null)
                 return NotFound();
 
            await _companyDepartment.UpdateDepartment(id, model); 
-            return Ok(response);
+            return NoContent();
         }
 
         [HttpDelete("delete-department/{id}")]
-        public async Task<IActionResult> DeleteDepartment(Guid Id)
-        { 
-            var response = await _companyDepartment.GetDepartment(Id);
+        public async Task<IActionResult> DeleteDepartment(Guid id)
+        {
+
+            if (Guid.Empty.Equals(id))
+            {
+                return BadRequest("Invalid Id");
+            }
+            var response = await _companyDepartment.GetDepartment(id);
             if(response == null)
                 return NotFound();
 
-            await _companyDepartment.DeleteDepartment(Id); 
+            await _companyDepartment.DeleteDepartment(id); 
             return NoContent();
         }
     }

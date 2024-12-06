@@ -18,13 +18,18 @@ namespace CompanyData.Shared.Models
         public string? Email { get; set; }
         public string? Address { get; set; }
         public string? JobRole { get; set; }
+        public string? City { get; set; }
+        public string? State { get; set; }
         public double WagesInDollar{ get; set; }
         public Guid DepartmentId { get; set; }
         public Department Department { get; set; }
         public string? CreatedBy { get; set; } = "HR";
-        public DateTime? CreatedOn { get; set; } = DateTime.Now;
+        public DateTime? CreatedOn { get; set; } 
         public DateTime? ModifiedOn { get; set; } 
         public string? ModifiedBy { get; set; } = "HR";
+        public DateTime? DeletedOn { get; set; }
+        public string? DeletedBy { get; set; } = "HR";
+        public bool IsDeleted { get; set; }
 
     }
 }

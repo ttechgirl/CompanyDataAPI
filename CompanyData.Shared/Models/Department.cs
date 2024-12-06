@@ -13,10 +13,8 @@ namespace CompanyData.Shared.Models
         public Guid Id { get; set; } = Guid.NewGuid();
         public string? Name { get; set; }
         public string? Supervisor { get; set; }
-        public string? City { get; set; }
-        public string? State { get; set; }
         public string? CreatedBy { get; set; } = "HR";
-        public DateTime? CreatedOn { get; set; } = DateTime.Now;
+        public DateTime? CreatedOn { get; set; } 
         public DateTime? ModifiedOn { get; set; } 
         public string? ModifiedBy { get; set; } = "HR";
     }

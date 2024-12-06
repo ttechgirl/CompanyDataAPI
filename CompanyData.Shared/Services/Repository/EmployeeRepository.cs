@@ -8,63 +8,87 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CompanyData.Shared.Services.Repository
 {
+    
     public class EmployeeRepository: IEmployeeRepository
     {
         private readonly ConfigDbContext _dbContext;
+        private readonly IDepartmentRepository _departmentRepository;
 
-        public EmployeeRepository(ConfigDbContext dbContext)
+        public EmployeeRepository(ConfigDbContext dbContext, IDepartmentRepository departmentRepository)
         {
             _dbContext = dbContext;
+            _departmentRepository = departmentRepository;
         }
 
-        public async Task CreateEmployee(EmployeeViewModel employee)
+        public async Task<EmployeeDto> CreateEmployee(EmployeeViewModel employee)
         {
-            var query = "INSERT INTO Employee(lastName,firstName,middleName,phoneNumber,email,department,jobRole,wagesInDollar,address,departmentId) " +
-                        " VALUES (@LastName, @FirstName,@MiddleName,@PhoneNumber,@Email,@Department,@JobRole,@Supervisor,@WagesInDollar,@Address,@DepartmentId)";
+            var getDepartment = await _departmentRepository.GetDepartment(employee.DepartmentId);
+            if(getDepartment == null)
+            {
+
+                return null;
+            }
+
+            var query = "INSERT INTO Employee(LastName,FirstName,MiddleName,PhoneNumber,Email,JobRole,WagesInDollar,Address,City,State,DepartmentId,CreatedOn) " +
+                        " VALUES (@LastName, @FirstName,@MiddleName,@PhoneNumber,@Email,@JobRole,@WagesInDollar,@Address,@City,@State,@DepartmentId,@CreatedOn)";
 
             var parameters = new DynamicParameters();
-            parameters.Add("lastName", employee.FirstName);
-            parameters.Add("firstName", employee.LastName);
-            parameters.Add("middleName", employee.MiddleName);
-            parameters.Add("phoneNumber", employee.PhoneNumber);
-            parameters.Add("email", employee.Email);
-            parameters.Add("jobRole", employee.JobRole);
-            parameters.Add("wagesInDollar", employee.WagesInDollar);
-            parameters.Add("address", employee.Address);
-            parameters.Add("departmentId", employee.DepartmentId);
+            parameters.Add("LastName", employee.LastName);
+            parameters.Add("FirstName", employee.FirstName);
+            parameters.Add("MiddleName", employee.MiddleName);
+            parameters.Add("PhoneNumber", employee.PhoneNumber);
+            parameters.Add("Email", employee.Email);
+            parameters.Add("JobRole", employee.JobRole);
+            parameters.Add("WagesInDollar", employee.WagesInDollar);
+            parameters.Add("Address", employee.Address);
+            parameters.Add("DepartmentId", employee.DepartmentId);
+            parameters.Add("City", employee.City);
+            parameters.Add("State", employee.State);
+            parameters.Add("CreatedOn", DateTime.Now);
 
             using var connection = _dbContext.CreateConnection();
             await connection.ExecuteAsync(query, parameters);
-            return;
+            return (EmployeeDto)employee;
         }
 
-        public Task DeleteEmployee(Guid Id)
+        public async Task DeleteEmployee(Guid Id)
         {
-            throw new NotImplementedException();
-        }
+            
+            var query = "UPDATE Employee " +
+                        "SET isDeleted,deletedOn" +
+                         " VALUES (@IsDeleted,@DeletedOn) WHERE Id = @Id AND IsDeleted <> 1";
 
-        public async Task<EmployeeDto?> GetEmployee(Guid Id)
-        {
-            var sproc = "sp_get_employee";
             var parameters = new DynamicParameters();
-            parameters.Add("id", Id, DbType.Guid, ParameterDirection.Input);
+            parameters.Add("Id", Id);
+            parameters.Add("isDeleted", true);
+            parameters.Add("deletedOn", DateTime.Now);
+           
             using (var connection = _dbContext.CreateConnection())
             {
-                var result = await connection.QueryFirstOrDefaultAsync<EmployeeDto>
-                             (sproc, parameters, commandType: CommandType.StoredProcedure);
+                await connection.ExecuteAsync(query, parameters);
+            }
+        }
 
-                return result;
+        public async Task<EmployeeDto?> GetEmployee(Guid id)
+        {
+            var query = "SELECT * FROM Employee WHERE Id =@id ";
+
+            using (var connection = _dbContext.CreateConnection())
+            {
+                var employee = await connection.QueryFirstOrDefaultAsync<EmployeeDto>(query, new { id });
+                return employee;
             }
         }
 
         public async Task<IEnumerable<EmployeeDto?>> GetEmployees()
         {
-            var query = "SELECT * FROM Employee ";
+            var query = "SELECT * FROM Employee WHERE IsDeleted <> 1";
             using (var connection = _dbContext.CreateConnection())
             {
                 var employees = await connection.QueryAsync<EmployeeDto>(query);
@@ -72,22 +96,27 @@ namespace CompanyData.Shared.Services.Repository
             }
         }
 
-        public async Task UpdateEmployeeDetails(Guid Id, EmployeeViewModel employee)
+        public async Task UpdateEmployeeDetails(Guid id, EmployeeViewModel employee)
         {
-            var query = "UPDATE Department " +
-                       "SET lastName,firstName,middleName,phoneNumber,email,department,jobRole,wagesInDollar,address,departmentId,modifiedOn" +
-                        " VALUES (@LastName, @FirstName,@MiddleName,@PhoneNumber,@Email,@Department,@JobRole,@Supervisor,@WagesInDollar,@Address,@DepartmentId,ModifiedOn)";
-            var modifiedOn = DateTime.Now;
+            var query = "UPDATE Employee " +
+                       "SET LastName = @LastName,FirstName = @FirstName,MiddleName = @MiddleName,PhoneNumber = @PhoneNumber,Email = @Email,JobRole = @JobRole," +
+                       "WagesInDollar = @WagesInDollar,Address = @Address,City = @City,State =@State,DepartmentId = @DepartmentId,ModifiedOn = @ModifiedOn " +
+                        "WHERE Id = @id AND IsDeleted <> 1";
+
             var parameters = new DynamicParameters();
-            parameters.Add("lastName", employee.FirstName);
-            parameters.Add("firstName", employee.LastName);
-            parameters.Add("middleName", employee.MiddleName);
-            parameters.Add("phoneNumber", employee.PhoneNumber);
-            parameters.Add("email", employee.Email);
-            parameters.Add("jobRole", employee.JobRole);
-            parameters.Add("wagesInDollar", employee.WagesInDollar);
-            parameters.Add("address", employee.Address);
-            parameters.Add("departmentId", employee.DepartmentId);
+            parameters.Add("Id", id);
+            parameters.Add("LastName", employee.LastName);
+            parameters.Add("FirstName", employee.FirstName);
+            parameters.Add("MiddleName", employee.MiddleName);
+            parameters.Add("PhoneNumber", employee.PhoneNumber);
+            parameters.Add("Email", employee.Email);
+            parameters.Add("JobRole", employee.JobRole);
+            parameters.Add("WagesInDollar", employee.WagesInDollar);
+            parameters.Add("Address", employee.Address);
+            parameters.Add("DepartmentId", employee.DepartmentId);
+            parameters.Add("City", employee.City);
+            parameters.Add("State", employee.State);
+            parameters.Add("ModifiedOn", DateTime.Now);
 
             using (var connection = _dbContext.CreateConnection())
             {

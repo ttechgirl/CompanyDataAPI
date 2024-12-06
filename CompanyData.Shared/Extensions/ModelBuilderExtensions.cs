@@ -16,17 +16,13 @@ namespace CompanyData.Shared.Extensions
                 new Department
                 {
                     Id = Guid.Parse("43738933-acf0-4479-8624-0ef1bec0383d"),
-                    Name = "Enginearing & Product", //to be corrected
-                    City ="Houston",
-                    State = "Texas",
+                    Name = "Engineering & Product", 
                     Supervisor = "paul@company.com",
                 },
                 new Department
                 {
                     Id = Guid.Parse("6c7e9c5d-89ae-43d9-8f19-feb71af65e8f"),
                     Name ="Marketing & Sales",
-                    City = "Ikeja",
-                    State = "Lagos",
                     Supervisor = "Adex@company.com",
 
                 }
@@ -41,10 +37,11 @@ namespace CompanyData.Shared.Extensions
                     FirstName = "Isaac",
                     PhoneNumber = "+1312754448",
                     Email = "paul@company.com",
-                    JobRole = "Lead", //TechLead
+                    JobRole = "Tech Lead", 
                     WagesInDollar = 4500,
                     Address = "8,Mesa Road",
-
+                    City = "Houston",
+                    State = "Texas",
                 },
                 new Employee
                 {
@@ -58,7 +55,8 @@ namespace CompanyData.Shared.Extensions
                     JobRole = "Media",
                     WagesInDollar = 2500,
                     Address = "12,ogunnaike street GRA",
-
+                    City = "Ikeja",
+                    State = "Lagos",
                 },
                 new Employee
                 {
@@ -72,7 +70,8 @@ namespace CompanyData.Shared.Extensions
                     JobRole = "Media Lead",
                     WagesInDollar = 5500,
                     Address = "30 Alpha estate lekki",
-
+                    City = "Ikeja",
+                    State = "Lagos",
                 }
             );
         }

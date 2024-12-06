@@ -12,10 +12,10 @@ namespace CompanyData.Shared.Services.Interface
     public interface IDepartmentRepository
     {
         Task<IEnumerable<DepartmentDto?>> GetDepartments();
-        Task<DepartmentDto?> GetDepartment(Guid Id);
-        Task<DepartmentDto?> CreateDepartment(DepartmentViewModel company);
-        Task UpdateDepartment(Guid Id, DepartmentViewModel company);
-        Task DeleteDepartment(Guid Id);
+        Task<DepartmentDto?> GetDepartment(Guid id);
+        Task<DepartmentDto?> CreateDepartment(DepartmentViewModel model);
+        Task UpdateDepartment(Guid id, DepartmentViewModel model);
+        Task DeleteDepartment(Guid id);
 
 
     }

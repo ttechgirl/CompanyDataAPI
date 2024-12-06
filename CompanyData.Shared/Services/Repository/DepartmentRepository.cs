@@ -26,13 +26,13 @@ namespace CompanyData.Shared.Services.Repository
         public async Task<DepartmentDto?> CreateDepartment(DepartmentViewModel model)
         {
 
-            var query = "INSERT INTO Department(name,supervisor,city,state) " +
-                       " VALUES (@Name,@Supervisor, @City, @State)";
+            var query = "INSERT INTO Department(Name,Supervisor,CreatedOn) " +
+                       " VALUES (@Name,@Supervisor,@CreatedOn)";
             var parameters = new DynamicParameters();
-            parameters.Add("name", model.Name);
-            parameters.Add("supervisor", model.Supervisor);
-            parameters.Add("city", model.City);
-            parameters.Add("state", model.State);
+            parameters.Add("Name", model.Name);
+            parameters.Add("Supervisor", model.Supervisor);
+            parameters.Add("CreatedOn", DateTime.Now);
+
 
             using (var connection = _dbContext.CreateConnection())
             {
@@ -78,14 +78,14 @@ namespace CompanyData.Shared.Services.Repository
         {
 
             var query = "UPDATE Department " +
-                        "SET name=@Name , address=@Address, city=@City, state= @State, supervisor = @Supervisor";
+                        "SET Name=@Name ,Supervisor = @Supervisor,ModifiedOn=@ModifiedOn WHERE Id = @id ";
             var parameters = new DynamicParameters();
-            parameters.Add("name", model.Name);
-            parameters.Add("city", model.City);
-            parameters.Add("state", model.State);
-            parameters.Add("supervisor", model);
+            parameters.Add("Id", id);
+            parameters.Add("Name", model.Name);
+            parameters.Add("Supervisor", model.Supervisor);
+            parameters.Add("ModifiedOn", DateTime.Now);
 
-            using(var connection = _dbContext.CreateConnection())
+            using (var connection = _dbContext.CreateConnection())
             {
                 await connection.ExecuteAsync(query, parameters);
             }
