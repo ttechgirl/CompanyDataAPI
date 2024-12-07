@@ -29,7 +29,7 @@ namespace CompanyDataAPI
         /// </summary>
         public static void TableMigrationScript(this WebApplication app)
         {
-            string dbConnStr = app.Configuration.GetConnectionString("ConnectingToDB");
+            string dbConnStr = app.Configuration.GetConnectionString("Default");
             EnsureDatabase.For.SqlDatabase(dbConnStr);
 
             var upgrader = DeployChanges.To.SqlDatabase(dbConnStr)
@@ -48,7 +48,7 @@ namespace CompanyDataAPI
         /// </summary>
         public static void StoredProcedureMigrationScript(this WebApplication app)
         {
-            string dbConnStr = app.Configuration.GetConnectionString("ConnectingToDB");
+            string dbConnStr = app.Configuration.GetConnectionString("Default");
             EnsureDatabase.For.SqlDatabase(dbConnStr);
 
             var upgrader = DeployChanges.To.SqlDatabase(dbConnStr)

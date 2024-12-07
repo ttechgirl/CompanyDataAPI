@@ -16,7 +16,7 @@ namespace CompanyDataAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectingToDB")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
             return builder;
         }
     }

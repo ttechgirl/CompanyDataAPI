@@ -16,7 +16,7 @@ namespace CompanyData.Shared.Context
         public ConfigDbContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            _connectionString = _configuration.GetConnectionString("ConnectingToDB");
+            _connectionString = _configuration.GetConnectionString("Default");
         }
 
         public IDbConnection CreateConnection() => new SqlConnection(_connectionString);

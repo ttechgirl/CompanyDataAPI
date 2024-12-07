@@ -16,7 +16,7 @@ namespace CompanyDataAPI
             builder.Services.AddSingleton<ConfigDbContext>();
             //builder.Services.AddSingleton<IDbConnection>(db =>
             //{
-            //    var connectionstring = builder.Configuration.GetConnectionString("ConnectingToDB");
+            //    var connectionstring = builder.Configuration.GetConnectionString("Default");
             //    var connection = new SqlConnection(connectionstring);
             //    return connection;
             //});
