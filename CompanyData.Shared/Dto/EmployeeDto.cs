@@ -1,4 +1,5 @@
 ﻿using CompanyData.Shared.Models;
+using CompanyDataAPI.Enum;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,10 +21,8 @@ namespace CompanyData.Shared.Dto
         public string? JobRole { get; set; }
         public string? City { get; set; }
         public string? State { get; set; }
+        public Gender Gender { get; set; }
         public double WagesInDollar { get; set; }
         public Guid DepartmentId { get; set; }
     }
-       
-    
-    
 }

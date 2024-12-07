@@ -1,4 +1,5 @@
 ﻿using CompanyData.Shared.Dto;
+using CompanyDataAPI.Enum;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +20,7 @@ namespace CompanyData.Shared.ViewModel
         public string? JobRole { get; set; }
         public string? City { get; set; }
         public string? State { get; set; }
+        public int Gender { get; set; }
         public double WagesInDollar { get; set; }
         public Guid DepartmentId { get; set; }
 
@@ -34,6 +36,9 @@ namespace CompanyData.Shared.ViewModel
                 Email = source.Email,
                 Address = source.Address,
                 JobRole = source.JobRole,
+                City = source.City,
+                State = source.State,
+                Gender =(Gender)source.Gender,
                 WagesInDollar = source.WagesInDollar,
                 DepartmentId = source.DepartmentId,
             };

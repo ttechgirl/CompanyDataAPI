@@ -20,6 +20,10 @@ namespace CompanyDataAPI.Controllers
         public async Task<IActionResult> GetACompanies()
         {
             var response = await _employeeRepository.GetEmployees();
+            if (!response.Any())
+            {
+                return NotFound();
+            }
             return Ok(response);
         }
 

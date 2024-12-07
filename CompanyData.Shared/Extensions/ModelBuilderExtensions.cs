@@ -1,4 +1,5 @@
 ﻿using CompanyData.Shared.Models;
+using CompanyDataAPI.Enum;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,8 @@ namespace CompanyData.Shared.Extensions
                     Address = "8,Mesa Road",
                     City = "Houston",
                     State = "Texas",
+                    Gender = Gender.FEMALE
+
                 },
                 new Employee
                 {
@@ -57,6 +60,7 @@ namespace CompanyData.Shared.Extensions
                     Address = "12,ogunnaike street GRA",
                     City = "Ikeja",
                     State = "Lagos",
+                    Gender = Gender.FEMALE
                 },
                 new Employee
                 {
@@ -72,6 +76,7 @@ namespace CompanyData.Shared.Extensions
                     Address = "30 Alpha estate lekki",
                     City = "Ikeja",
                     State = "Lagos",
+                    Gender = Gender.MALE
                 }
             );
         }

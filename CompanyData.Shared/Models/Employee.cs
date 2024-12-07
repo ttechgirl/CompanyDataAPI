@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CompanyDataAPI.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,6 +21,7 @@ namespace CompanyData.Shared.Models
         public string? JobRole { get; set; }
         public string? City { get; set; }
         public string? State { get; set; }
+        public Gender? Gender { get; set; }
         public double WagesInDollar{ get; set; }
         public Guid DepartmentId { get; set; }
         public Department Department { get; set; }
@@ -29,7 +31,7 @@ namespace CompanyData.Shared.Models
         public string? ModifiedBy { get; set; } = "HR";
         public DateTime? DeletedOn { get; set; }
         public string? DeletedBy { get; set; } = "HR";
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
     }
 }

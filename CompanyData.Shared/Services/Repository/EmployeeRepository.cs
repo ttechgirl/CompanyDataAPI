@@ -35,10 +35,13 @@ namespace CompanyData.Shared.Services.Repository
                 return null;
             }
 
-            var query = "INSERT INTO Employee(LastName,FirstName,MiddleName,PhoneNumber,Email,JobRole,WagesInDollar,Address,City,State,DepartmentId,CreatedOn) " +
-                        " VALUES (@LastName, @FirstName,@MiddleName,@PhoneNumber,@Email,@JobRole,@WagesInDollar,@Address,@City,@State,@DepartmentId,@CreatedOn)";
+            var query = "INSERT INTO Employee(Id,LastName,FirstName,MiddleName,PhoneNumber,Email,JobRole,WagesInDollar,Address,City,State,DepartmentId,Gender,CreatedOn,IsDeleted) " +
+                        " VALUES (@Id,@LastName, @FirstName,@MiddleName,@PhoneNumber,@Email,@JobRole,@WagesInDollar,@Address,@City,@State,@DepartmentId,@Gender,@CreatedOn,@IsDeleted)";
+
+            var id = Guid.NewGuid();
 
             var parameters = new DynamicParameters();
+            parameters.Add("Id", id);
             parameters.Add("LastName", employee.LastName);
             parameters.Add("FirstName", employee.FirstName);
             parameters.Add("MiddleName", employee.MiddleName);
@@ -50,24 +53,27 @@ namespace CompanyData.Shared.Services.Repository
             parameters.Add("DepartmentId", employee.DepartmentId);
             parameters.Add("City", employee.City);
             parameters.Add("State", employee.State);
+            parameters.Add("Gender", employee.Gender);
             parameters.Add("CreatedOn", DateTime.Now);
+            parameters.Add("IsDeleted", false);
 
             using var connection = _dbContext.CreateConnection();
             await connection.ExecuteAsync(query, parameters);
-            return (EmployeeDto)employee;
+            var response= (EmployeeDto)employee;
+            response.Id = id;
+            return response;
         }
 
         public async Task DeleteEmployee(Guid Id)
         {
             
             var query = "UPDATE Employee " +
-                        "SET isDeleted,deletedOn" +
-                         " VALUES (@IsDeleted,@DeletedOn) WHERE Id = @Id AND IsDeleted <> 1";
+                        "SET IsDeleted = @IsDeleted,DeletedOn = @DeletedOn WHERE Id = @Id AND IsDeleted <> 1";
 
             var parameters = new DynamicParameters();
             parameters.Add("Id", Id);
-            parameters.Add("isDeleted", true);
-            parameters.Add("deletedOn", DateTime.Now);
+            parameters.Add("IsDeleted", true);
+            parameters.Add("DeletedOn", DateTime.Now);
            
             using (var connection = _dbContext.CreateConnection())
             {
@@ -77,7 +83,7 @@ namespace CompanyData.Shared.Services.Repository
 
         public async Task<EmployeeDto?> GetEmployee(Guid id)
         {
-            var query = "SELECT * FROM Employee WHERE Id =@id ";
+            var query = "SELECT * FROM Employee WHERE Id =@id AND IsDeleted <> 1";
 
             using (var connection = _dbContext.CreateConnection())
             {
@@ -99,7 +105,7 @@ namespace CompanyData.Shared.Services.Repository
         public async Task UpdateEmployeeDetails(Guid id, EmployeeViewModel employee)
         {
             var query = "UPDATE Employee " +
-                       "SET LastName = @LastName,FirstName = @FirstName,MiddleName = @MiddleName,PhoneNumber = @PhoneNumber,Email = @Email,JobRole = @JobRole," +
+                       "SET LastName = @LastName,FirstName = @FirstName,MiddleName = @MiddleName,PhoneNumber = @PhoneNumber,Email = @Email,JobRole = @JobRole,Gender = @Gender" +
                        "WagesInDollar = @WagesInDollar,Address = @Address,City = @City,State =@State,DepartmentId = @DepartmentId,ModifiedOn = @ModifiedOn " +
                         "WHERE Id = @id AND IsDeleted <> 1";
 
@@ -116,6 +122,7 @@ namespace CompanyData.Shared.Services.Repository
             parameters.Add("DepartmentId", employee.DepartmentId);
             parameters.Add("City", employee.City);
             parameters.Add("State", employee.State);
+            parameters.Add("Gender", employee.Gender);
             parameters.Add("ModifiedOn", DateTime.Now);
 
             using (var connection = _dbContext.CreateConnection())
@@ -123,6 +130,5 @@ namespace CompanyData.Shared.Services.Repository
                 await connection.ExecuteAsync(query, parameters);
             }
         }
-
     }
 }

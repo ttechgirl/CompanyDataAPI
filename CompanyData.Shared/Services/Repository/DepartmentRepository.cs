@@ -25,26 +25,27 @@ namespace CompanyData.Shared.Services.Repository
 
         public async Task<DepartmentDto?> CreateDepartment(DepartmentViewModel model)
         {
-
-            var query = "INSERT INTO Department(Name,Supervisor,CreatedOn) " +
-                       " VALUES (@Name,@Supervisor,@CreatedOn)";
+            var query = "INSERT INTO Department(Id,Name,Supervisor,CreatedOn,CreatedBy) " +
+                       " VALUES (@Id,@Name,@Supervisor,@CreatedOn,@CreatedBy)";
+            var id = Guid.NewGuid();
             var parameters = new DynamicParameters();
+            parameters.Add("Id", id);
             parameters.Add("Name", model.Name);
             parameters.Add("Supervisor", model.Supervisor);
             parameters.Add("CreatedOn", DateTime.Now);
-
+            parameters.Add("CreatedBy", "HR");
 
             using (var connection = _dbContext.CreateConnection())
             {
                 await connection.ExecuteAsync(query,parameters);
-               
-                return (DepartmentDto)model;
+               var response = (DepartmentDto)model;
+                response.Id = id;
+                return response;
             }
         }
 
         public async Task DeleteDepartment(Guid id)
         {
-
             var query = "DELETE FROM Department WHERE Id=@Id";
             using(var connection = _dbContext.CreateConnection())
             {
@@ -54,7 +55,7 @@ namespace CompanyData.Shared.Services.Repository
 
         public async Task<IEnumerable<DepartmentDto?>> GetDepartments()
         {
-            var query = "SELECT * FROM Department ";
+            var query = "SELECT * FROM Department";
             using (var connection = _dbContext.CreateConnection())
             {
                 var response = await connection.QueryAsync<DepartmentDto>(query);
@@ -64,7 +65,6 @@ namespace CompanyData.Shared.Services.Repository
 
         public async Task<DepartmentDto?> GetDepartment(Guid id)
         {
-
             var query = "SELECT * FROM Department WHERE Id =@id ";
            
             using (var connection = _dbContext.CreateConnection())
